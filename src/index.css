@@ -5,9 +5,27 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+  min-width: 390px
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+  /* Add your mobile-specific styles here */
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Add your tablet-specific styles here */
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+  /* Add your desktop-specific styles here */
 }

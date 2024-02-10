@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './pages/Layout';
+import { UserContextProvider } from './states/UserContext';
+import Outh from './pages/Outh';
+import Profile from './pages/Profile';
+import Search from './pages/Search';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContextProvider>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Outh />} />
+        <Route path="/search" element={<Search />} />
+        {/* <Route index element={<Content />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/edit/:id" element={<Create />} />
+        */}
+        <Route path="/outh" element={<Outh />} />
+        <Route path="/profile" element={<Profile />} /> 
+      </Route>
+    </Routes>
+    </UserContextProvider>
   );
 }
 
