@@ -3,29 +3,16 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import BasicButtons from "../components/buttons/BasicButtons";
 
-const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login button clicked!");
-    // Add your login logic here
-  };
-
-  const handleRegisterClick = () => {
-    // Add your register navigation logic here
-  };
-
+const SignUp = ({
+  handleSignup,
+  SignupClear,
+  UserName,
+  setUserName,
+  password,
+  setPassword,
+  email,
+  setEmail,
+}) => {
   return (
     <Box
       component="form"
@@ -41,9 +28,28 @@ const SignUp = () => {
       noValidate
       autoComplete="off"
     >
-      <TextField id="filled-basic" label="Username" variant="filled" />
-      <TextField id="filled-basic" label="Password" variant="filled" />
-        <TextField id="filled-basic" label="Email" variant="filled" />
+      <TextField
+        value={UserName}
+        onChange={(e) => setUserName(e.target.value)}
+        id="filled-basic"
+        label="Username"
+        variant="filled"
+      />
+      <TextField
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        id="filled-password"
+        label="Password"
+        variant="filled"
+        type="password"
+      />
+      <TextField
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        id="filled-email"
+        label="Email"
+        variant="filled"
+      />
       <Box
         sx={{
           display: "flex",
@@ -53,8 +59,8 @@ const SignUp = () => {
           "& > :not(style)": { m: 1 },
         }}
       >
-        <BasicButtons text={"Submit"} onClick={handleLoginSubmit} />
-        <BasicButtons text={"Clear"} onClick={handleRegisterClick} />
+        <BasicButtons text={"SIGN UP"} onClick={handleSignup} />
+        <BasicButtons text={"Clear"} onClick={SignupClear} />
       </Box>
     </Box>
   );

@@ -10,7 +10,7 @@ const Search = () => {
   const [search, setSearch] = useState("");
   const { tag, setTag, onClickTag } = React.useContext(UserContext);
 
-  const onClickSearch = () => {
+  const onClickSave = () => {
     console.log(search, "search");
   };
 
@@ -99,9 +99,9 @@ const Search = () => {
                 sx={{ margin: "10px", width: "300px" }}
                 variant="contained"
                 color="primary"
-                onClick={() => onClickSearch()}
+                onClick={() => onClickSave()}
               >
-                Search
+                Save
               </Button>
             </Grid>
           </Grid>
@@ -124,7 +124,7 @@ const Search = () => {
                 width: "100%",
                 height: "100%",
                 borderRadius: "10px",
-                marginTop: "10px",
+                margin: "10px",
               }}
               noValidate
               autoComplete="off"

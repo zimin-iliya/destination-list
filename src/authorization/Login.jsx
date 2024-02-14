@@ -4,28 +4,14 @@ import TextField from "@mui/material/TextField";
 import BasicButtons from "../components/buttons/BasicButtons";
 import LabTabs from "../components/tabs/LabTabs";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login button clicked!");
-    // Add your login logic here
-  };
-
-  const handleRegisterClick = () => {
-    // Add your register navigation logic here
-  };
-
+const Login = ({
+  loginGoogle,
+  loginPassword,
+  email,
+  setEmail,
+  password,
+  setPassword,
+}) => {
   return (
     <Box
       component="form"
@@ -41,8 +27,21 @@ const Login = () => {
       noValidate
       autoComplete="off"
     >
-      <TextField id="filled-basic" label="Username" variant="filled" />
-      <TextField id="filled-basic" label="Password" variant="filled" />
+      <TextField
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        id="filled-email"
+        label="Email"
+        variant="filled"
+      />
+      <TextField
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        id="filled-password"
+        label="Password"
+        variant="filled"
+        type="password"
+      />{" "}
       <Box
         sx={{
           display: "flex",
@@ -52,8 +51,11 @@ const Login = () => {
           "& > :not(style)": { m: 1 },
         }}
       >
-        <BasicButtons text={"Submit"} onClick={handleLoginSubmit} />
-        <BasicButtons text={"Clear"} onClick={handleRegisterClick} />
+        <BasicButtons text={"Sign in"} onClick={() => loginPassword()} />
+        <BasicButtons
+          text={"Sign in with Google"}
+          onClick={() => loginGoogle()}
+        />
       </Box>
     </Box>
   );

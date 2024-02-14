@@ -15,6 +15,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
 function MenuAppBar() {
+  
+
   const { auth, setAuth } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
 

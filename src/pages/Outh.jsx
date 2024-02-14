@@ -8,12 +8,12 @@ const OAuth = () => {
         <Box
         sx={{
           mx: "auto",
-          width: "800px",
-          minwidth: "50vhd",
+          width: "100%",
+          maxWidth: "700px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          marginTop: "10%",
+          marginTop: "5%",
           border: "1px solid black",
           "& > :not(style)": { m: 1 },
         }}
