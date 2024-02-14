@@ -3,9 +3,20 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Card from "../components/cards/Card";
+import { Button, Grid } from "@mui/material";
+import { UserContext } from "../states/UserContext";
 
 const Search = () => {
   const [search, setSearch] = useState("");
+  const { tag, setTag, onClickTag } = React.useContext(UserContext);
+
+  const onClickSearch = () => {
+    console.log(search, "search");
+  };
+
+  const onClickClear = () => {
+    console.log(search, "search");
+  };
 
   return (
     <>
@@ -21,7 +32,7 @@ const Search = () => {
         autoComplete="off"
       >
         <TextField
-          sx={{ width: "500px" }}
+          sx={{ width: "100%" }}
           onChange={(e) => setSearch(e.target.value)}
           id="outlined-basic"
           label="Search"
@@ -36,27 +47,91 @@ const Search = () => {
           alignItems: "center",
           marginTop: "10px",
           backgroundColor: "lightgray",
-          width: "500px",
-          height: "500px",
+          width: "100%",
+          height: "100%",
           borderRadius: "10px",
-
         }}
       >
-        <h1>map</h1>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+          }}
+        >
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Card onClickTag={onClickTag} tag={tag} setTag={setTag} />
+            <Card onClickTag={onClickTag} tag={tag} setTag={setTag} />
+            <Card onClickTag={onClickTag} tag={tag} setTag={setTag} />
+            <Card onClickTag={onClickTag} tag={tag} setTag={setTag} />
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                sx={{ margin: "10px", width: "300px" }}
+                variant="contained"
+                color="primary"
+                onClick={() => onClickClear()}
+              >
+                Clear
+              </Button>
+              <Button
+                sx={{ margin: "10px", width: "300px" }}
+                variant="contained"
+                color="primary"
+                onClick={() => onClickSearch()}
+              >
+                Search
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                backgroundColor: "lightblue",
+                width: "100%",
+                height: "100%",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+              noValidate
+              autoComplete="off"
+            ></Box>
+          </Grid>
+        </Grid>
       </Box>
-      <Box
-        sx={{
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "10px",
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <Card />
-        </Box>
     </>
   );
 };

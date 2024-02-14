@@ -1,29 +1,30 @@
-import * as React from 'react';
-import { useContext,useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import * as React from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../states/UserContext";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 
- function MenuAppBar() {
-  const [auth, setAuth] = useState(true);
+function MenuAppBar() {
+  const { auth, setAuth } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
 
-const handleChange = (event) => {
+  const handleChange = (event) => {
     setAuth(event.target.checked);
-};
+  };
 
-const handleMenu = (event) => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
-};
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -31,7 +32,7 @@ const handleMenu = (event) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {/* <FormGroup>
+      <FormGroup>
         <FormControlLabel
           control={
             <Switch
@@ -40,9 +41,9 @@ const handleMenu = (event) => {
               aria-label="login switch"
             />
           }
-          label={auth ? 'Logout' : 'Login'}
+          label={auth ? "Logout" : "Login"}
         />
-      </FormGroup> */}
+      </FormGroup>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -73,13 +74,13 @@ const handleMenu = (event) => {
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}

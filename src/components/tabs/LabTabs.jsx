@@ -22,7 +22,6 @@ export default function LabTabs() {
     setValue(newValue);
   };
 
-
   if (redirect) {
     return <Navigate to="/search" />;
   }
