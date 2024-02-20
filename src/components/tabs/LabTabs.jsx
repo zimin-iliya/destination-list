@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../states/UserContext";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -12,29 +14,34 @@ import { Navigate } from "react-router-dom";
 import { supabase } from "../../authorization/Supabase";
 
 export default function LabTabs() {
+  const { user } = useContext(UserContext);
+
   const [email, setEmail] = useState("");
   const [UserName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [value, setValue] = useState("1");
+  const [redirect, setRedirect] = useState(false);
 
-  console.log(UserName, email, password);
+  console.log(user, email, password);
 
   const handleSignup = async () => {
     const { data, error } = await supabase.auth.signUp({
-      email: "example@email.com",
-      password: "example-password",
+      email: email,
+      password: password,
     });
     if (error) {
       console.log("error", error);
     }
     if (data) {
-      localStorage.setItem("user", JSON.stringify(data));
+      redirect(true);
     }
     console.log("handleSignup", data, error);
   };
   const SignupClear = () => {
-    setEmail(null);
-    setPassword(null);
-    setUserName(null);
+    console.log("SignupClear");
+    setEmail("");
+    setPassword("");
+    setUserName("");
   };
 
   const handleSignInWithGoogle = async () => {
@@ -50,11 +57,13 @@ export default function LabTabs() {
       email: email,
       password: password,
     });
-    console.log("handlesignInWithPassword", data, error);
+    if (error) {
+      console.log("error", error);
+    }
+    if (data) {
+      setRedirect(true);
+    }
   };
-
-  const [value, setValue] = useState("1");
-  const [redirect, setRedirect] = useState(false);
 
   const handleTrail = () => {
     setRedirect(true);
@@ -100,8 +109,6 @@ export default function LabTabs() {
           <SignUp
             handleSignup={handleSignup}
             SignupClear={SignupClear}
-            UserName={UserName}
-            setUserName={setUserName}
             password={password}
             setPassword={setPassword}
             email={email}

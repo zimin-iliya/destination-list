@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import BasicButtons from "../components/buttons/BasicButtons";
@@ -6,8 +5,6 @@ import BasicButtons from "../components/buttons/BasicButtons";
 const SignUp = ({
   handleSignup,
   SignupClear,
-  UserName,
-  setUserName,
   password,
   setPassword,
   email,
@@ -29,10 +26,10 @@ const SignUp = ({
       autoComplete="off"
     >
       <TextField
-        value={UserName}
-        onChange={(e) => setUserName(e.target.value)}
-        id="filled-basic"
-        label="Username"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        id="filled-email"
+        label="Email"
         variant="filled"
       />
       <TextField
@@ -43,13 +40,6 @@ const SignUp = ({
         variant="filled"
         type="password"
       />
-      <TextField
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        id="filled-email"
-        label="Email"
-        variant="filled"
-      />
       <Box
         sx={{
           display: "flex",
@@ -59,8 +49,8 @@ const SignUp = ({
           "& > :not(style)": { m: 1 },
         }}
       >
-        <BasicButtons text={"SIGN UP"} onClick={handleSignup} />
         <BasicButtons text={"Clear"} onClick={SignupClear} />
+        <BasicButtons text={"SIGN UP"} onClick={handleSignup} />
       </Box>
     </Box>
   );

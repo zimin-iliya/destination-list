@@ -8,21 +8,12 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
 function MenuAppBar() {
-  
-
-  const { auth, setAuth } = useContext(UserContext);
+  const { handleSignOut, session } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -31,21 +22,13 @@ function MenuAppBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleRedirect = () => {
+    setAnchorEl(null);
+    window.location.href = "/profile";
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? "Logout" : "Login"}
-        />
-      </FormGroup>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -57,10 +40,15 @@ function MenuAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            onClick={handleMenu}
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
             Destination List
           </Typography>
-          {auth && (
+          {session?.access_token.length && (
             <div>
               <IconButton
                 size="large"
@@ -87,8 +75,9 @@ function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleRedirect}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleSignOut}>Logout</MenuItem>
               </Menu>
             </div>
           )}

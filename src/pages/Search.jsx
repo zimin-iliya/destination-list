@@ -5,10 +5,12 @@ import TextField from "@mui/material/TextField";
 import Card from "../components/cards/Card";
 import { Button, Grid } from "@mui/material";
 import { UserContext } from "../states/UserContext";
+import { useContext } from "react";
+import MapView from "../components/map/MapView";
 
 const Search = () => {
   const [search, setSearch] = useState("");
-  const { tag, setTag, onClickTag } = React.useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const onClickSave = () => {
     console.log(search, "search");
@@ -31,6 +33,7 @@ const Search = () => {
         noValidate
         autoComplete="off"
       >
+        {user && <h1>{user.username}</h1>}
         <TextField
           sx={{ width: "100%" }}
           onChange={(e) => setSearch(e.target.value)}
@@ -72,10 +75,10 @@ const Search = () => {
               alignItems: "center",
             }}
           >
-            <Card onClickTag={onClickTag} tag={tag} setTag={setTag} />
-            <Card onClickTag={onClickTag} tag={tag} setTag={setTag} />
-            <Card onClickTag={onClickTag} tag={tag} setTag={setTag} />
-            <Card onClickTag={onClickTag} tag={tag} setTag={setTag} />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
             <Grid
               item
               xs={12}
@@ -128,7 +131,9 @@ const Search = () => {
               }}
               noValidate
               autoComplete="off"
-            ></Box>
+            >
+              <MapView/>
+            </Box>
           </Grid>
         </Grid>
       </Box>
