@@ -6,7 +6,8 @@ export const UserContext = createContext({});
 export function UserContextProvider({ children }) {
   const [auth, setAuth] = useState(true);
   const [session, setSession] = useState(null)
-  const libraries = ['places']
+  
+  const libraries = {libraries:['places']}
 
 
   const  handleSignOut = async () => {

@@ -22,7 +22,6 @@ export default function LabTabs() {
   const [value, setValue] = useState("1");
   const [redirect, setRedirect] = useState(false);
 
-  console.log(user, email, password);
 
   const handleSignup = async () => {
     const { data, error } = await supabase.auth.signUp({

@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import Card from "../components/cards/Card";
 import { Button, Grid } from "@mui/material";
 import { UserContext } from "../states/UserContext";
@@ -9,15 +8,14 @@ import { useContext } from "react";
 import MapView from "../components/map/MapView";
 
 const Search = () => {
-  const [search, setSearch] = useState("");
   const { user } = useContext(UserContext);
 
   const onClickSave = () => {
-    console.log(search, "search");
+    console.log("search");
   };
 
   const onClickClear = () => {
-    console.log(search, "search");
+    console.log("search");
   };
 
   return (
@@ -29,29 +27,9 @@ const Search = () => {
           flexDirection: "column",
           alignItems: "center",
           marginTop: "10px",
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        {user && <h1>{user.username}</h1>}
-        <TextField
-          sx={{ width: "100%" }}
-          onChange={(e) => setSearch(e.target.value)}
-          id="outlined-basic"
-          label="Search"
-          variant="outlined"
-        />
-      </Box>
-      <Box
-        sx={{
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "10px",
           backgroundColor: "lightgray",
           width: "100%",
-          height: "100%",
+          height: "100dvh",
           borderRadius: "10px",
         }}
       >
@@ -125,14 +103,14 @@ const Search = () => {
                 flexWrap: "wrap",
                 backgroundColor: "lightblue",
                 width: "100%",
-                height: "100%",
+                height: "80svh",
                 borderRadius: "10px",
                 margin: "10px",
               }}
               noValidate
               autoComplete="off"
             >
-              <MapView/>
+              <MapView />
             </Box>
           </Grid>
         </Grid>
