@@ -8,29 +8,30 @@ import {
   Autocomplete,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-import { useContext } from "react";
-import { UserContext } from "../../states/UserContext";
-import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import { useState, useRef, useEffect, useMemo } from "react";
 import TextField from "@mui/material/TextField";
+import { useContext } from "react";
+import { UserContext } from "../../states/UserContext";
 
 const MapView = () => {
-  // const { libraries } = useContext(UserContext);
   const ipiKey = process.env.REACT_APP_GOOGLE_API_KEY;
   const [autocomplete, setAutocomplete] = useState(null);
   const [search, setSearch] = useState("");
   const [coords, setCoords] = useState("");
-  const [coords2, setCoords2] = useState("");
+  const [localCoords, setlocalCoords] = useState([]);
   const [direction, setDirection] = useState(null);
   const [distance, setdistance] = useState("");
   const [duration, setduration] = useState("");
+  const [optimizeWaypoints, setOptimizeWaypoints] = useState(false);
   const [map, setMap] = useState(/**@type google.maps.map */ (null));
-  const libraries = useMemo(() => ["places", "geometry"], []);
+  const libraries = useMemo(() => ["places", "geometry", "marker"], []);
+
+  const { savedLocations, setSavedLocations } = useContext(UserContext);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) => {
-        setCoords({ lat: latitude, lng: longitude });
+        setlocalCoords({ lat: latitude, lng: longitude });
       }
     );
   }, []);
@@ -50,11 +51,18 @@ const MapView = () => {
   // console.log(direction, "direction");
   // console.log(search, "search");
   // console.log(originRef?.current?.value, "originRef");
-  console.log(coords2, "coords2");
+  // console.log(coords2[0].place.place_id, "coords2ID");
+  console.log(savedLocations[0]?.place?.geometry?.location?.toJSON(), "savedLocationsID");
+  console.log(coords, "coords");
 
   if (!isLoaded) {
     return <Skeleton variant="rectangular" width="100%" height="100%" />;
   }
+
+  // const marker = new AdvancedMarkerElement({
+  //   map,
+  //   position: { lat: 37.4239163, lng: -122.0947209 },
+  // });
 
   async function getDistance() {
     if (originRef.current.value === "" && destiantionRef.current.value === "") {
@@ -64,15 +72,15 @@ const MapView = () => {
     const directionsService = new window.google.maps.DirectionsService();
 
     const waypoints = [
-      { location: coords2 },
-
+      // { location: coords2 },
       // Add more stops here
     ];
 
     const result = await directionsService.route({
       origin: originRef.current.value,
       destination: destiantionRef.current.value,
-      waypoints: waypoints,
+      // waypoints: waypoints,
+      optimizeWaypoints: optimizeWaypoints,
       travelMode: window.google.maps.TravelMode.DRIVING,
     });
 
@@ -92,7 +100,8 @@ const MapView = () => {
   const onPlaceChanged = () => {
     if (autocomplete) {
       const place = autocomplete.getPlace();
-      setCoords2(place);
+      setSavedLocations([...savedLocations, { place }]);
+      setCoords(place.geometry.location.toJSON());
     }
   };
 
@@ -133,6 +142,9 @@ const MapView = () => {
           zoomControl: true,
           fullscreenControl: false,
         }}
+        onChange={(e) => {
+          setCoords(e.center.toJSON());
+        }}
         onLoad={(map) => {
           setMap(map);
         }}
@@ -160,7 +172,7 @@ const MapView = () => {
         <Button
           onClick={() => {
             if (coords.lat !== 0 && coords.lng !== 0) {
-              map.panTo(coords);
+              map.panTo(localCoords);
             }
           }}
         >

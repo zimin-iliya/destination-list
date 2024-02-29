@@ -8,7 +8,7 @@ import { useContext } from "react";
 import MapView from "../components/map/MapView";
 
 const Search = () => {
-  const { user } = useContext(UserContext);
+  const { user,savedLocations, setSavedLocations } = useContext(UserContext);
 
   const onClickSave = () => {
     console.log("search");
@@ -53,10 +53,11 @@ const Search = () => {
               alignItems: "center",
             }}
           >
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {savedLocations.map ((location) => {
+              return <Card location={location} />;
+            }
+            )}
+
             <Grid
               item
               xs={12}

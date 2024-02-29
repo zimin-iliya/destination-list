@@ -11,14 +11,29 @@ import {
   Select,
   FormHelperText,
 } from "@mui/material";
+import { useContext } from "react";
+import { UserContext } from "../../states/UserContext";
 
-export default function Card() {
+export default function Card(location) {
   const [label, setLabel] = useState("");
+
+  const { user, savedLocations, setSavedLocations } = useContext(UserContext);
+
+  console.log(location.location.place?.geometry?.location?.toJSON(), "location");
+  console.log(location.location.place?.name, "location");
+  console.log(savedLocations, "savedLocations");
+  console.log(location, "locationRAW");
+
 
   const handleChange = (event) => {
     setLabel(event.target.value);
     console.log(event.target.value, "event.target.value");
     console.log(label, "label");
+  };
+
+  const onClickDelete = () => {
+    console.log("delete");
+
   };
 
   return (
@@ -46,8 +61,13 @@ export default function Card() {
             flexDirection: "row",
           }}
         >
-          <Grid item xs={12} sm={6} md={6}>
-            {label}
+          <Grid item xs={12} sm={6} md={6} >
+            <h3>{location.location.place?.name}</h3>
+            <p>{location.location.place?.geometry?.location?.toJSON().lat}</p>
+            <p>{location.location.place?.geometry?.location?.toJSON().lng}</p>
+            {/* <p>{location.location.place?.place.international_phone_number }</p> */}
+
+            <p>{location.location.place?.formatted_address}</p>
           </Grid>
           <Grid
             item
@@ -81,7 +101,9 @@ export default function Card() {
               <FormHelperText>Required</FormHelperText>
             </FormControl>
             <Button>
-              <DeleteForeverIcon />
+              <DeleteForeverIcon onClick={() => {
+                onClickDelete();
+              }} />
             </Button>
           </Grid>
         </Grid>

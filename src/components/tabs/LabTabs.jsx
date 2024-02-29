@@ -17,11 +17,9 @@ export default function LabTabs() {
   const { user } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
-  const [UserName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [value, setValue] = useState("1");
   const [redirect, setRedirect] = useState(false);
-
 
   const handleSignup = async () => {
     const { data, error } = await supabase.auth.signUp({
@@ -32,15 +30,14 @@ export default function LabTabs() {
       console.log("error", error);
     }
     if (data) {
+      console.log("handleSignup", data, error);
       redirect(true);
     }
-    console.log("handleSignup", data, error);
   };
   const SignupClear = () => {
     console.log("SignupClear");
     setEmail("");
     setPassword("");
-    setUserName("");
   };
 
   const handleSignInWithGoogle = async () => {
@@ -60,6 +57,7 @@ export default function LabTabs() {
       console.log("error", error);
     }
     if (data) {
+      console.log("handlesignInWithPassword", data, error);
       setRedirect(true);
     }
   };
