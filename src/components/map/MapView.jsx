@@ -46,40 +46,38 @@ const MapView = () => {
     libraries,
   });
 
-  // console.log(distance, "distance");
-  // console.log(duration, "duration");
-  // console.log(direction, "direction");
-  // console.log(search, "search");
-  // console.log(originRef?.current?.value, "originRef");
-  // console.log(coords2[0].place.place_id, "coords2ID");
-  console.log(savedLocations[0]?.place?.geometry?.location?.toJSON(), "savedLocationsID");
   console.log(coords, "coords");
 
   if (!isLoaded) {
     return <Skeleton variant="rectangular" width="100%" height="100%" />;
   }
 
-  // const marker = new AdvancedMarkerElement({
-  //   map,
-  //   position: { lat: 37.4239163, lng: -122.0947209 },
-  // });
-
   async function getDistance() {
-    if (originRef.current.value === "" && destiantionRef.current.value === "") {
-      return;
-    }
-
     const directionsService = new window.google.maps.DirectionsService();
 
-    const waypoints = [
-      // { location: coords2 },
-      // Add more stops here
-    ];
+    const waypoints =
+     savedLocations.map((location) => {
+      return {
+        location: location.place?.name,
+        stopover: true,
+      };
+    });
+    console.log(waypoints, "waypoints");
+    // [
+    //   {
+    //     location: "Rishon LeTsiyon, Israel",
+    //     stopover: true,
+    //   },
+    //   {
+    //     location: "Tel Aviv-Yafo, Israel",
+    //     stopover: true,
+    //   },
+    // ];
 
     const result = await directionsService.route({
-      origin: originRef.current.value,
+      origin: originRef.current.value ? originRef.current.value : localCoords,
       destination: destiantionRef.current.value,
-      // waypoints: waypoints,
+      waypoints: waypoints,
       optimizeWaypoints: optimizeWaypoints,
       travelMode: window.google.maps.TravelMode.DRIVING,
     });
@@ -135,7 +133,7 @@ const MapView = () => {
         /> */}
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "100%" }}
-        center={coords}
+        center={localCoords}
         zoom={12}
         options={{
           disableDefaultUI: true,

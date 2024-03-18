@@ -1,14 +1,11 @@
 import React from "react";
-import { useState } from "react";
 import Box from "@mui/material/Box";
-import Card from "../components/cards/Card";
 import { Button, Grid } from "@mui/material";
-import { UserContext } from "../states/UserContext";
-import { useContext } from "react";
 import MapView from "../components/map/MapView";
+import DndBoard from "../components/dndboard/DndBoard";
 
 const Search = () => {
-  const { user,savedLocations, setSavedLocations } = useContext(UserContext);
+
 
   const onClickSave = () => {
     console.log("search");
@@ -53,11 +50,7 @@ const Search = () => {
               alignItems: "center",
             }}
           >
-            {savedLocations.map ((location) => {
-              return <Card location={location} />;
-            }
-            )}
-
+            <DndBoard />
             <Grid
               item
               xs={12}

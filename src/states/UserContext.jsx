@@ -1,12 +1,13 @@
 import { createContext, useState, useEffect } from "react";
 import { supabase } from "../authorization/Supabase";
+import {data} from "../components/dndboard/data";
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [auth, setAuth] = useState(true);
   const [session, setSession] = useState(null);
-  const [savedLocations, setSavedLocations] = useState([]);
+  const [savedLocations, setSavedLocations] = useState(data);
 
 
   const handleSignOut = async () => {
