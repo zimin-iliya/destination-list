@@ -1,6 +1,7 @@
 export const data = [
   {
     place: {
+      localId: 1,
       address_components: [
         {
           long_name: "96",
@@ -431,6 +432,7 @@ export const data = [
   },
   {
     place: {
+      localId: 2,
       address_components: [
         {
           long_name: "101",
@@ -634,6 +636,7 @@ export const data = [
   },
   {
     place: {
+      localId: 3,
       address_components: [
         {
           long_name: "Tel Aviv Towers",

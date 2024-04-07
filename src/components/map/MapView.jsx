@@ -55,8 +55,7 @@ const MapView = () => {
   async function getDistance() {
     const directionsService = new window.google.maps.DirectionsService();
 
-    const waypoints =
-     savedLocations.map((location) => {
+    const waypoints = savedLocations.map((location) => {
       return {
         location: location.place?.name,
         stopover: true,

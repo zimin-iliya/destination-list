@@ -1,12 +1,22 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import { useState,useContext } from "react";
 import { Button, Grid } from "@mui/material";
 import MapView from "../components/map/MapView";
-import DndBoard from "../components/dndboard/DndBoard";
+import { SortableList } from "../components/dndboard/SortableList";
+import { UserContext } from "../states/UserContext";
+import Card from "../components/cards/Card";
 
 const Search = () => {
+  const { savedLocations, setSavedLocations } = useContext(UserContext);
+  const [items, setItems] = useState(getMockItems);
+  console.log(items, "items");
+  console.log(savedLocations, "savedLocations");
 
 
+  function createRange(length, initializer) {
+    return [...new Array(length)].map((_, index) => initializer(index));
+  }
   const onClickSave = () => {
     console.log("search");
   };
@@ -14,6 +24,10 @@ const Search = () => {
   const onClickClear = () => {
     console.log("search");
   };
+
+  function getMockItems() {
+    return createRange(3, (index) => ({ id: index + 1 }));
+  }
 
   return (
     <>
@@ -50,7 +64,20 @@ const Search = () => {
               alignItems: "center",
             }}
           >
-            <DndBoard />
+            <div style={{ maxWidth: 800, margin: "30px auto" }}>
+
+
+              <SortableList
+                items={savedLocations}
+                onChange={setSavedLocations}
+                renderItem={(location ) => (
+                  <SortableList.Item id={location.place.localId}>
+                    <Card location={location}/>
+                    <SortableList.DragHandle />
+                  </SortableList.Item>
+                )}
+              />
+            </div>
             <Grid
               item
               xs={12}
