@@ -4,7 +4,8 @@ import { Box, Button } from "@mui/material";
 import {
   useJsApiLoader,
   GoogleMap,
-  Marker,
+  MarkerF,
+  InfoWindowF,
   Autocomplete,
   DirectionsRenderer,
 } from "@react-google-maps/api";
@@ -12,10 +13,13 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import TextField from "@mui/material/TextField";
 import { useContext } from "react";
 import { UserContext } from "../../states/UserContext";
+import { v4 as uuidv4 } from "uuid";
+import picture from "../../utils/icons8.png";
 
 const MapView = () => {
   const ipiKey = process.env.REACT_APP_GOOGLE_API_KEY;
   const [autocomplete, setAutocomplete] = useState(null);
+  const [activeMarker, setActiveMarker] = useState(null);
   const [search, setSearch] = useState("");
   const [coords, setCoords] = useState("");
   const [localCoords, setlocalCoords] = useState([]);
@@ -27,6 +31,14 @@ const MapView = () => {
   const libraries = useMemo(() => ["places", "geometry", "marker"], []);
 
   const { savedLocations, setSavedLocations } = useContext(UserContext);
+
+  const markers = savedLocations.map((location) => {
+    return {
+      id: location.place.localId,
+      name: location.place.name,
+      position: location.place.geometry.location,
+    };
+  });
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -46,11 +58,16 @@ const MapView = () => {
     libraries,
   });
 
-  console.log(coords, "coords");
-
   if (!isLoaded) {
     return <Skeleton variant="rectangular" width="100%" height="100%" />;
   }
+
+  const handleActiveMarker = (marker) => {
+    if (marker === activeMarker) {
+      return;
+    }
+    setActiveMarker(marker);
+  };
 
   async function getDistance() {
     const directionsService = new window.google.maps.DirectionsService();
@@ -61,17 +78,6 @@ const MapView = () => {
         stopover: true,
       };
     });
-    console.log(waypoints, "waypoints");
-    // [
-    //   {
-    //     location: "Rishon LeTsiyon, Israel",
-    //     stopover: true,
-    //   },
-    //   {
-    //     location: "Tel Aviv-Yafo, Israel",
-    //     stopover: true,
-    //   },
-    // ];
 
     const result = await directionsService.route({
       origin: originRef.current.value ? originRef.current.value : localCoords,
@@ -97,7 +103,15 @@ const MapView = () => {
   const onPlaceChanged = () => {
     if (autocomplete) {
       const place = autocomplete.getPlace();
-      setSavedLocations([...savedLocations, { place }]);
+      setSavedLocations([
+        ...savedLocations,
+        {
+          place: {
+            ...place,
+            localId: uuidv4(),
+          },
+        },
+      ]);
       setCoords(place.geometry.location.toJSON());
     }
   };
@@ -124,16 +138,13 @@ const MapView = () => {
           variant="outlined"
         />
       </Autocomplete>
-      {/* <input
-          sx={{ width: "100%" }}
-          id="outlined-basic"
-          label="Search"
-          variant="outlined"
-        /> */}
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "100%" }}
         center={localCoords}
         zoom={12}
+        onClick={() => {
+          setActiveMarker(null);
+        }}
         options={{
           disableDefaultUI: true,
           zoomControl: true,
@@ -146,12 +157,25 @@ const MapView = () => {
           setMap(map);
         }}
       >
-        <Marker
-          position={{ lat: 32.0684, lng: 34.8248 }}
-          icon={{
-            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-          }}
-        />
+        {markers.map(({ id, name, position }) => (
+          <MarkerF
+            key={id}
+            position={position}
+            onClick={() => handleActiveMarker(id)}
+            icon={{
+              url: "https://t4.ftcdn.net/jpg/02/85/33/21/360_F_285332150_qyJdRevcRDaqVluZrUp8ee4H2KezU9CA.jpg",
+              scaledSize: { width: 50, height: 50 },
+            }}
+          >
+            {activeMarker === id ? (
+              <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
+                <div>
+                  <p>{name}</p>
+                </div>
+              </InfoWindowF>
+            ) : null}
+          </MarkerF>
+        ))}
 
         {direction && <DirectionsRenderer directions={direction} />}
       </GoogleMap>
@@ -187,14 +211,6 @@ const MapView = () => {
             label="Search"
             variant="outlined"
           />
-          {/* <TextField
-            ref={originRef}
-            sx={{ width: "100%" }}
-            onChange={(e) => setSearch(e.target.value)}
-            id="outlined-basic"
-            label="Search"
-            variant="outlined"
-          /> */}
         </Autocomplete>
         <Autocomplete>
           <input
@@ -205,14 +221,6 @@ const MapView = () => {
             label="Search"
             variant="outlined"
           />
-          {/* <TextField
-            ref={destiantionRef}
-            sx={{ width: "100%" }}
-            // onChange={(e) => setSearch(e.target.value)}
-            id="outlined-basic"
-            label="Search"
-            variant="outlined"
-          /> */}
         </Autocomplete>
       </Box>
     </Box>

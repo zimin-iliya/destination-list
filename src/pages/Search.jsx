@@ -1,22 +1,20 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { useState,useContext } from "react";
+import { useState, useContext } from "react";
 import { Button, Grid } from "@mui/material";
 import MapView from "../components/map/MapView";
 import { SortableList } from "../components/dndboard/SortableList";
 import { UserContext } from "../states/UserContext";
 import Card from "../components/cards/Card";
+import { Autocomplete } from "@react-google-maps/api";
+import { v4 as uuidv4 } from "uuid";
+import TextField from "@mui/material/TextField";
 
 const Search = () => {
   const { savedLocations, setSavedLocations } = useContext(UserContext);
-  const [items, setItems] = useState(getMockItems);
-  console.log(items, "items");
-  console.log(savedLocations, "savedLocations");
+  const [autocomplete, setAutocomplete] = useState(null);
+  const [coords, setCoords] = useState("");
 
-
-  function createRange(length, initializer) {
-    return [...new Array(length)].map((_, index) => initializer(index));
-  }
   const onClickSave = () => {
     console.log("search");
   };
@@ -25,9 +23,23 @@ const Search = () => {
     console.log("search");
   };
 
-  function getMockItems() {
-    return createRange(3, (index) => ({ id: index + 1 }));
-  }
+
+
+  const onPlaceChanged = () => {
+    if (autocomplete) {
+      const place = autocomplete.getPlace();
+      setSavedLocations([
+        ...savedLocations,
+        {
+          place: {
+            ...place,
+            localId: uuidv4(),
+          },
+        },
+      ]);
+      setCoords(place.geometry.location.toJSON());
+    }
+  };
 
   return (
     <>
@@ -44,6 +56,7 @@ const Search = () => {
           borderRadius: "10px",
         }}
       >
+        
         <Grid
           container
           spacing={2}
@@ -65,14 +78,12 @@ const Search = () => {
             }}
           >
             <div style={{ maxWidth: 800, margin: "30px auto" }}>
-
-
               <SortableList
                 items={savedLocations}
                 onChange={setSavedLocations}
-                renderItem={(location ) => (
+                renderItem={(location) => (
                   <SortableList.Item id={location.place.localId}>
-                    <Card location={location}/>
+                    <Card location={location} />
                     <SortableList.DragHandle />
                   </SortableList.Item>
                 )}
@@ -131,7 +142,7 @@ const Search = () => {
               noValidate
               autoComplete="off"
             >
-              <MapView />
+              <MapView coords={coords} setCoords={setCoords} />
             </Box>
           </Grid>
         </Grid>

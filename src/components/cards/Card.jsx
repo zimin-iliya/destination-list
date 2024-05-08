@@ -13,31 +13,27 @@ import {
 } from "@mui/material";
 import { useContext } from "react";
 import { UserContext } from "../../states/UserContext";
-import { Label } from "@mui/icons-material";
 
 export default function Card(location, key) {
   const [label, setLabel] = useState("");
 
-  const { savedLocations } = useContext(UserContext);
+  const { savedLocations, setSavedLocations } = useContext(UserContext);
 
   const handleChange = (event) => {
     setLabel(event.target.value);
   };
-
+  console.log(savedLocations);
   const onClickDelete = () => {
     const filteredLocations = savedLocations.filter(
-      (item) =>
-        item?.location?.place?.place_id !== location?.location?.place?.place_id
+      (item) => item.place.localId !== location.location.place.localId
     );
-
-    console.log(Label, "label");
+    console.log(filteredLocations);
+    setSavedLocations(filteredLocations);
   };
-
   return (
     <>
       <Box
         sx={{
-          marginTop: "10px",
           width: "100%",
           minHeight: "100px",
           maxHeight: "auto",
@@ -45,9 +41,10 @@ export default function Card(location, key) {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "darkgray",
+          backgroundColor: "lightgray",
           borderRadius: "10px",
           mx: 2,
+          padding: "10px", // Add padding here
         }}
       >
         <Grid
@@ -97,12 +94,13 @@ export default function Card(location, key) {
               </Select>
               <FormHelperText>Required</FormHelperText>
             </FormControl>
-            <Button>
-              <DeleteForeverIcon
-                onClick={() => {
-                  onClickDelete();
-                }}
-              />
+            <Button
+              color="error"
+              onClick={() => {
+                onClickDelete();
+              }}
+            >
+              <DeleteForeverIcon />
             </Button>
           </Grid>
         </Grid>
